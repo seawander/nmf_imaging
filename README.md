@@ -27,7 +27,7 @@ result = nmf_imaging.nmf_func(trg = trg, refs = refs, trg_err = trg_err, refs_er
 
 
 ### 3. Expert coding with a number of targets:
-Since the construction of the NMF components takes a considarable amount of time, the author suggests the users contructing the components only once with ```NMFcomponents```, and use the components to model the target**s** with ```NMFmodelling```, then call the BFF subtraction described in Ren et al. (2017) with ```NMFbff``` and ```NMF subtraction```.
+Since the construction of the NMF components takes a considarable amount of time, the author suggests the users contructing the components only once with ```NMFcomponents```, and use the components to model the target**s** with ```NMFmodelling```, then call the BFF subtraction described in Ren et al. (2017) with ```NMFbff``` and ```NMFsubtraction```.
 
 Example:
 ```python
