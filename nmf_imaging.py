@@ -245,6 +245,6 @@ def nmf_function(trg, refs, trg_err = None, refs_err = None, mask = None, compon
     Output: result (2D array): NMF modeling result. Only the final subtraction result is returned."""
     components = NMFcomponents(refs, ref_err = refs_err, mask = mask, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
     model = NMFmodelling(trg = trg, components = components, n_components = componentNum, trg_err = trg_err, mask_components=mask, maxiters=maxiters)
-    best_frac = NMFbff(trg_single, model, mask)
-    result = NMFsubtraction(trg_single, model, mask, frac = best_frac)
+    best_frac = NMFbff(trg = trg, model = model, mask = mask)
+    result = NMFsubtraction(trg = trg, model = model, mask = mask, frac = best_frac)
     return result
