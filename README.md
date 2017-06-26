@@ -1,7 +1,11 @@
 # nmf_imaging
 
-Postprocessing Code for High Contrast Imaging using Vectorized Nonnegative Matrix Factorization (NMF) . The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and is studied by Ren et al. (2017) for the high contrast imaging in exoplanetary science. This code depends on the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) [code](https://github.com/seawander/NonnegMFPy).
+Postprocessing code for high contrast imaging using vectorized Nonnegative Matrix Factorization (NMF) in Python. The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and is studied by Ren et al. (2017) for the application in high contrast imaging in the exoplanetary science. This code depends on the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) [code](https://github.com/seawander/NonnegMFPy).
 
+## Installation
+```pip install --user -e git+https://github.com/seawander/nmf_imaging.git#egg=Package```
+
+The above command does not require administrator access, and can be run both on one's personal desktop and on a computer cluster.
 
 ## Running the code:
 
