@@ -153,7 +153,7 @@ def nmf_math(sci, ref_psfs, sci_err = None, ref_psfs_err = None, componentNum = 
             oneByOne (boolean): whether to construct the NMF components one by one. Default: True.
     Output: result (1D array): NMF modeling result. Only the final subtraction result is returned."""
     components = NMFcomponents(ref_psfs, ref_err = ref_psfs_err, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
-    model = NMFmodelling(trg = sci, trg_err = sci_err, components = components, n_components = componentNum, trg_err = trg_err, maxiters=maxiters)
+    model = NMFmodelling(trg = sci, components = components, n_components = componentNum, trg_err = sci_err, maxiters=maxiters)
     best_frac = NMFbff(trg = sci, model = model)
     result = NMFsubtraction(trg = sci, model = model, frac = best_frac)
     return result.flatten()
