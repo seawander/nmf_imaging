@@ -61,7 +61,7 @@ def NMFmodelling(trg, components, n_components = None, trg_err = None, maxiters 
         NMF model of the target.
     """
     if n_components is None:
-        n_components = components.shape[1]
+        n_components = components.shape[0]
         
     if trg_err is None:
         trg_err = np.sqrt(trg)
