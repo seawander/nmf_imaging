@@ -114,7 +114,7 @@ def NMFmodelling(trg, components, n_components = None, trg_err = None, maxiters 
 def NMFsubtraction(trg, model, frac = 1):
     """NMF subtraction with a correction factor, frac."""
     if np.shape(np.asarray(frac)) == ():
-        return trg-model*frac
+        return (trg-model*frac).flatten()
     result = np.zeros((len(frac), ) + model.shape)
     for i, fraction in enumerate(frac):
         result[i] = trg-model*fraction
@@ -152,8 +152,8 @@ def nmf_function(trg, refs, trg_err = None, refs_err = None, mask = None, compon
             maxiters (integer): number of iterations needed. Default: 10^5.
             oneByOne (boolean): whether to construct the NMF components one by one. Default: True.
     Output: result (1D array): NMF modeling result. Only the final subtraction result is returned."""
-    components = NMFcomponents(refs, ref_err = refs_err, mask = mask, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
-    model = NMFmodelling(trg = trg, components = components, n_components = componentNum, trg_err = trg_err, mask_components=mask, maxiters=maxiters)
-    best_frac = NMFbff(trg = trg, model = model, mask = mask)
-    result = NMFsubtraction(trg = trg, model = model, mask = mask, frac = best_frac)
-    return result
+    components = NMFcomponents(refs, ref_err = refs_err, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
+    model = NMFmodelling(trg = trg, components = components, n_components = componentNum, trg_err = trg_err, maxiters=maxiters)
+    best_frac = NMFbff(trg = trg, model = model)
+    result = NMFsubtraction(trg = trg, model = model, frac = best_frac)
+    return result.flatten()
