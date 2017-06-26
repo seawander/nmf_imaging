@@ -3,9 +3,9 @@ from NonnegMFPy import nmf
 import numpy as np
 
 def NMFcomponents(ref, ref_err = None, n_components = None, maxiters = 1e3, oneByOne = False):
-    """Returns the NMF components, where the columns contain the information.
+    """Returns the NMF components, where the rows contain the information.
     Input: ref and ref_err should be (N * p) where n is the number of references, p is the number of pixels in each reference.
-    Output: NMf components.
+    Output: NMf components (n_components * p).
     """
     if ref_err is None:
         ref_err = np.sqrt(ref)
@@ -44,17 +44,21 @@ def NMFcomponents(ref, ref_err = None, n_components = None, maxiters = 1e3, oneB
             
             components_column = g_img.W/np.sqrt(np.nansum(g_img.W**2, axis = 0)) #normalize the components
     
-    return components_column
+    return components_column.T
     
 def NMFmodelling(trg, components, n_components = None, trg_err = None, maxiters = 1e3, returnChi2 = False, projectionsOnly = False, coefsAlso = False, cube = False, trgThresh = 1.0):
-    """
-    trg: 1D array, p pixels
-    components: p * N, calculated using NMFcomponents.
-    n_components: how many components do you want to use. If None, all the components will be used.
+    """ NMF modeling.
+    Inputs:
+        trg: 1D array, p pixels
+        components: N * p, calculated using NMFcomponents.
+        n_components: how many components do you want to use. If None, all the components will be used.
     
-    projectionsOnly: output the individual projection results.
-    cube: whether output a cube or not (increasing the number of components).
-    trgThresh: ignore the regions with low photon counts. Especially when they are ~10^-15 or smaller. I chose 1 in this case.
+        projectionsOnly: output the individual projection results.
+        cube: whether output a cube or not (increasing the number of components).
+        trgThresh: ignore the regions with low photon counts. Especially when they are ~10^-15 or smaller. I chose 1 in this case.
+    
+    Returns:
+        NMF model of the target.
     """
     if n_components is None:
         n_components = components.shape[1]
@@ -65,9 +69,10 @@ def NMFmodelling(trg, components, n_components = None, trg_err = None, maxiters 
     trg[trg < trgThresh] = 0
     trg_err[trg == 0] = np.nanpercentile(trg_err, 95)*10
     
-    components_column = components
+    components_column = components.T   #columnize the components, make sure NonnegMFPy returns correct results.
     components_column = components_column/np.sqrt(np.nansum(components_column**2, axis = 0)) #normalize the components #make sure the components are normalized.
     
+    #Columnize the target and its error.
     trg_column = np.zeros((trg.shape[0], 1))
     trg_column[:, 0] = trg
     trg_err_column = np.zeros((trg_err.shape[0], 1))
@@ -101,10 +106,10 @@ def NMFmodelling(trg, components, n_components = None, trg_err = None, maxiters 
             model_column = np.dot(components_column[:, :i+1], coefs)
             
     if returnChi2:
-        return model_column, chi2
+        return model_column.T, chi2
     if coefsAlso:
-        return model_column, coefs
-    return model_column
+        return model_column.T, coefs
+    return model_column.T
     
 def NMFsubtraction(trg, model, frac = 1):
     """NMF subtraction with a correction factor, frac."""
@@ -139,14 +144,14 @@ def NMFbff(trg, model, fracs = None):
    
 def nmf_function(trg, refs, trg_err = None, refs_err = None, mask = None, componentNum = 5, maxiters = 1e5, oneByOne = True):
     """ Main NMF function for high contrast imaging.
-    Input:  trg (2D array): target image, dimension: height * width.
-            refs (3D array): reference cube, dimension: referenceNumber * height * width.
+    Input:  trg (1D array): target image, dimension: height * width.
+            refs (2D array): reference cube, dimension: referenceNumber * height * width.
             trg_err, ref_err: uncertainty for trg and refs, repectively. If None is given, the squareroot of the two arrays will be adopted.
-            mask (2D array): 0 and 1 array, the mask of the region we are interested in for NMF. 1 means the pixel we are interested in.
+       
             componentNum (integer): number of components to be used. Default: 5. Caution: choosing too many components will slow down the computation.
             maxiters (integer): number of iterations needed. Default: 10^5.
             oneByOne (boolean): whether to construct the NMF components one by one. Default: True.
-    Output: result (2D array): NMF modeling result. Only the final subtraction result is returned."""
+    Output: result (1D array): NMF modeling result. Only the final subtraction result is returned."""
     components = NMFcomponents(refs, ref_err = refs_err, mask = mask, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
     model = NMFmodelling(trg = trg, components = components, n_components = componentNum, trg_err = trg_err, mask_components=mask, maxiters=maxiters)
     best_frac = NMFbff(trg = trg, model = model, mask = mask)
