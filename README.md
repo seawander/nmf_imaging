@@ -52,3 +52,5 @@ for i in range(trgs.shape[0]):
 ## Dependences
 NonnegMFPy, which can be obtained from [https://github.com/guangtunbenzhu/NonnegMFPy](https://github.com/guangtunbenzhu/NonnegMFPy), and its dependences: Python ( > 3.5.1), NumPy ( > 1.11.0), and Scipy ( > 0.17.0).
     
+## References
+Ren et al. (2017), to be submitted.
