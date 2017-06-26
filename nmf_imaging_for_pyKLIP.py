@@ -142,7 +142,7 @@ def NMFbff(trg, model, fracs = None):
         std_infos[i] = std_info
     return fracs[np.where(std_infos == np.nanmin(std_infos))]   
    
-def nmf_math(trg, refs, trg_err = None, refs_err = None, mask = None, componentNum = 5, maxiters = 1e5, oneByOne = True):
+def nmf_math(sci, ref_psfs, sci_err = None, ref_psfs_err = None, componentNum = 5, maxiters = 1e5, oneByOne = True):
     """ Main NMF function for high contrast imaging.
     Input:  trg (1D array): target image, dimension: height * width.
             refs (2D array): reference cube, dimension: referenceNumber * height * width.
@@ -152,8 +152,8 @@ def nmf_math(trg, refs, trg_err = None, refs_err = None, mask = None, componentN
             maxiters (integer): number of iterations needed. Default: 10^5.
             oneByOne (boolean): whether to construct the NMF components one by one. Default: True.
     Output: result (1D array): NMF modeling result. Only the final subtraction result is returned."""
-    components = NMFcomponents(refs, ref_err = refs_err, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
-    model = NMFmodelling(trg = trg, components = components, n_components = componentNum, trg_err = trg_err, maxiters=maxiters)
-    best_frac = NMFbff(trg = trg, model = model)
-    result = NMFsubtraction(trg = trg, model = model, frac = best_frac)
+    components = NMFcomponents(ref_psfs, ref_err = ref_psfs_err, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
+    model = NMFmodelling(trg = sci, trg_err = sci_err, components = components, n_components = componentNum, trg_err = trg_err, maxiters=maxiters)
+    best_frac = NMFbff(trg = sci, model = model)
+    result = NMFsubtraction(trg = sci, model = model, frac = best_frac)
     return result.flatten()
