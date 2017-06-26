@@ -142,7 +142,7 @@ def NMFbff(trg, model, fracs = None):
         std_infos[i] = std_info
     return fracs[np.where(std_infos == np.nanmin(std_infos))]   
    
-def nmf_function(trg, refs, trg_err = None, refs_err = None, mask = None, componentNum = 5, maxiters = 1e5, oneByOne = True):
+def nmf_math(trg, refs, trg_err = None, refs_err = None, mask = None, componentNum = 5, maxiters = 1e5, oneByOne = True):
     """ Main NMF function for high contrast imaging.
     Input:  trg (1D array): target image, dimension: height * width.
             refs (2D array): reference cube, dimension: referenceNumber * height * width.
