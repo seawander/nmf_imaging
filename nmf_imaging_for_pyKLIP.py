@@ -109,7 +109,7 @@ def NMFmodelling(trg, components, n_components = None, trg_err = None, maxiters 
         return model_column.T, chi2
     if coefsAlso:
         return model_column.T, coefs
-    return model_column.T
+    return model_column.T.flatten()
     
 def NMFsubtraction(trg, model, frac = 1):
     """NMF subtraction with a correction factor, frac."""
