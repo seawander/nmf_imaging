@@ -142,18 +142,32 @@ def NMFbff(trg, model, fracs = None):
         std_infos[i] = std_info
     return fracs[np.where(std_infos == np.nanmin(std_infos))]   
    
-def nmf_math(sci, ref_psfs, sci_err = None, ref_psfs_err = None, componentNum = 5, maxiters = 1e5, oneByOne = True):
-    """ Main NMF function for high contrast imaging.
-    Input:  trg (1D array): target image, dimension: height * width.
-            refs (2D array): reference cube, dimension: referenceNumber * height * width.
-            trg_err, ref_err: uncertainty for trg and refs, repectively. If None is given, the squareroot of the two arrays will be adopted.
-       
-            componentNum (integer): number of components to be used. Default: 5. Caution: choosing too many components will slow down the computation.
-            maxiters (integer): number of iterations needed. Default: 10^5.
-            oneByOne (boolean): whether to construct the NMF components one by one. Default: True.
-    Output: result (1D array): NMF modeling result. Only the final subtraction result is returned."""
+def nmf_math(sci, ref_psfs, sci_err = None, ref_psfs_err = None, componentNum = 5, maxiters = 1e5, oneByOne = True, trg_type = 'disk'):
+    """
+    Main NMF function for high contrast imaging.
+    Args:  
+        trg (1D array): target image, dimension: height * width.
+        refs (2D array): reference cube, dimension: referenceNumber * height * width.
+        trg_err, ref_err: uncertainty for trg and refs, repectively. If None is given, the squareroot of the two arrays will be adopted.
+    
+        componentNum (integer): number of components to be used. Default: 5. Caution: choosing too many components will slow down the computation.
+        maxiters (integer): number of iterations needed. Default: 10^5.
+        oneByOne (boolean): whether to construct the NMF components one by one. Default: True.
+        trg_type (string): 'disk' (or 'd', for circumstellar disk) or 'planet' (or 'p', for planets). To reveal planets, the BFF procedure will not be implemented.
+    Returns: 
+        result (1D array): NMF modeling result. Only the final subtraction result is returned.
+    """
+    badpix = np.where(np.isnan(sci))
+    sci[badpix] = 0
+    
     components = NMFcomponents(ref_psfs, ref_err = ref_psfs_err, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
     model = NMFmodelling(trg = sci, components = components, n_components = componentNum, trg_err = sci_err, maxiters=maxiters)
-    best_frac = NMFbff(trg = sci, model = model)
+    
+    #Bff Procedure below: for planets, it will not be implemented.
+    if trg_type == 'p' or 'planet': # planets
+        best_frac = 1
+    elif trg_type == 'd' or 'disk': # disks
+        best_frac = NMFbff(trg = sci, model = model)
+    
     result = NMFsubtraction(trg = sci, model = model, frac = best_frac)
     return result.flatten()
