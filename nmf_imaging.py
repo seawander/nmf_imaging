@@ -233,7 +233,7 @@ def NMFbff(trg, model, mask = None, fracs = None):
         std_infos[i] = std_info
     return fracs[np.where(std_infos == np.nanmin(std_infos))]   
    
-def nmf_func(trg, refs, trg_err = None, refs_err = None, mask = None, componentNum = 5, maxiters = 1e5, oneByOne = True):
+def nmf_func(trg, refs, trg_err = None, refs_err = None, mask = None, componentNum = 5, maxiters = 1e5, oneByOne = True, trg_type = 'disk'):
     """ Main NMF function for high contrast imaging.
     Input:  trg (2D array): target image, dimension: height * width.
             refs (3D array): reference cube, dimension: referenceNumber * height * width.
@@ -242,9 +242,14 @@ def nmf_func(trg, refs, trg_err = None, refs_err = None, mask = None, componentN
             componentNum (integer): number of components to be used. Default: 5. Caution: choosing too many components will slow down the computation.
             maxiters (integer): number of iterations needed. Default: 10^5.
             oneByOne (boolean): whether to construct the NMF components one by one. Default: True.
+            trg_type (string): 'disk' (or 'd', for circumstellar disk) or 'planet' (or 'p', for planets). To reveal planets, the BFF procedure will not be implemented.
     Output: result (2D array): NMF modeling result. Only the final subtraction result is returned."""
     components = NMFcomponents(refs, ref_err = refs_err, mask = mask, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
     model = NMFmodelling(trg = trg, components = components, n_components = componentNum, trg_err = trg_err, mask_components=mask, maxiters=maxiters)
-    best_frac = NMFbff(trg = trg, model = model, mask = mask)
+        #Bff Procedure below: for planets, it will not be implemented.
+    if trg_type == 'p' or 'planet': # planets
+        best_frac = 1
+    elif trg_type == 'd' or 'disk': # disks
+        best_frac = NMFbff(trg = sci, model = model)
     result = NMFsubtraction(trg = trg, model = model, mask = mask, frac = best_frac)
     return result
