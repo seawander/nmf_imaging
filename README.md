@@ -1,6 +1,6 @@
 # nmf_imaging
 
-Postprocessing code for high contrast imaging using vectorized Nonnegative Matrix Factorization (NMF) in Python. The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and is studied by Ren et al. ([2017](http://adsabs.harvard.edu/abs/2017arXiv171210317R)) for the application in high contrast imaging in the exoplanetary science. This code depends on the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) [code](https://github.com/seawander/NonnegMFPy).
+Postprocessing code for high contrast imaging using vectorized Nonnegative Matrix Factorization (NMF) in Python. The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and is studied by Ren et al. ([2018]([link](http://adsabs.harvard.edu/abs/2018ApJ...852..104R))) for the application in high contrast imaging in the exoplanetary science. This code depends on the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) [code](https://github.com/seawander/NonnegMFPy).
 
 ## Installation
 ```pip install --user -e git+https://github.com/seawander/nmf_imaging.git#egg=Package```
@@ -27,7 +27,7 @@ result = nmf_imaging.nmf_func(trg = trg, refs = refs, trg_err = trg_err, refs_er
 
 
 ### 3. Expert coding with a number of targets:
-Since the construction of the NMF components takes a considarable amount of time, the author suggests the users contructing the components only once with ```NMFcomponents```, and use the components to model the target**s** with ```NMFmodelling```, then call the BFF subtraction described in Ren et al. [2018](http://adsabs.harvard.edu/abs/2018ApJ...852..104R) with ```NMFbff``` and ```NMFsubtraction```.
+Since the construction of the NMF components takes a considarable amount of time, the author suggests the users contructing the components only once with ```NMFcomponents```, and use the components to model the target**s** with ```NMFmodelling```, then call the BFF subtraction described in Ren et al. ([2018](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)) with ```NMFbff``` and ```NMFsubtraction```.
 
 Example:
 ```python
