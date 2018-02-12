@@ -27,13 +27,14 @@ result = nmf_imaging.nmf_func(trg = trg, refs = refs, trg_err = trg_err, refs_er
 
 
 ### 3. Expert coding with a number of targets:
-Since the construction of the NMF components takes a considarable amount of time, the author suggests the users contructing the components only once with ```NMFcomponents```, and use the components to model the target**s** with ```NMFmodelling```, then call the BFF subtraction described in Ren et al. (2017) with ```NMFbff``` and ```NMFsubtraction```.
+Since the construction of the NMF components takes a considarable amount of time, the author suggests the users contructing the components only once with ```NMFcomponents```, and use the components to model the target**s** with ```NMFmodelling```, then call the BFF subtraction described in Ren et al. [2018](http://adsabs.harvard.edu/abs/2018ApJ...852..104R) with ```NMFbff``` and ```NMFsubtraction```.
 
 Example:
 ```python
 import nmf_imaging
 components = nmf_imaging.NMFcomponents(refs, ref_err = refs_err, mask = mask, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
-#The above line construct the NMF components using the references. The components can be stored in local disk to save future computational cost.
+#The above line construct the NMF components using the references. 
+#The components can be stored in local disk to save future computational cost.
 
 #Next: modeling a number of targets (especially, many exposures of a single targets):
 results = np.zeros(trgs.shape) # Say trgs is a 3D array containing the targets that need NMF modeling, then results store the NMF subtraction results.
@@ -53,4 +54,4 @@ for i in range(trgs.shape[0]):
 NonnegMFPy, which can be obtained from [https://github.com/guangtunbenzhu/NonnegMFPy](https://github.com/guangtunbenzhu/NonnegMFPy), and its dependences: Python ( > 3.5.1), NumPy ( > 1.11.0), and Scipy ( > 0.17.0).
     
 ## References
-Ren et al. (2018), ApJ accepted (ADS [link](http://adsabs.harvard.edu/abs/2017arXiv171210317R)).
+Ren et al. (2018), publised in the Astrophysical Journal (ADS [link](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)).
