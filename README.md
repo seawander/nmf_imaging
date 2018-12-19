@@ -1,4 +1,6 @@
-# nmf_imaging
+# nmf_imaging [![DOI](https://zenodo.org/badge/95447087.svg)](https://zenodo.org/badge/latestdoi/95447087)
+
+
 
 Postprocessing code for high contrast imaging using vectorized Nonnegative Matrix Factorization (NMF) in Python. The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and is studied by Ren et al. ([2018]([link](http://adsabs.harvard.edu/abs/2018ApJ...852..104R))) for the application in high contrast imaging in the exoplanetary science. This code depends on the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) [code](https://github.com/seawander/NonnegMFPy).
 
@@ -55,3 +57,8 @@ NonnegMFPy, which can be obtained from [https://github.com/guangtunbenzhu/Nonneg
     
 ## References
 Ren et al. (2018), publised in the Astrophysical Journal (ADS [link](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)).
+
+*BibTex*
+```
+To Be Added.
+```
