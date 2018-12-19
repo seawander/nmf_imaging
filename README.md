@@ -60,5 +60,13 @@ Ren et al. (2018), publised in the Astrophysical Journal (ADS [link](http://adsa
 
 *BibTex*
 ```
-To Be Added.
+@misc{nmfimaging,
+	author     	= { {Ren}, Bin },
+	title      	= {nmf\_imaging, v1.0, Zenodo, doi: \href{https://doi.org/10.5281/zenodo.2424378}{10.5281/zenodo.2424378}},
+	version 	= {1.0},
+	month      	= Dec,
+	year         	= 2018,
+	doi          	= {10.5281/zenodo.2424378},
+	url		= {https://doi.org/10.5281/zenodo.2424378}
+}
 ```
