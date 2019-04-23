@@ -265,11 +265,16 @@ def NMFmodelling(trg, components, n_components = None, trg_err = None, mask_comp
             (chi2, time_used) = trg_img.SolveNMF(H_only=True, maxiters = maxiters)
     
             coefs = trg_img.H
+            
+            if flag_di == 0:
+                model_column = np.dot(components_column[:, :i+1], coefs)
     
-            model_column = np.dot(components_column[:, :i+1], coefs)
-    
-            model_slice = decolumnize(model_column, mask)
-            model_slice[np.where(mask == 0)] = np.nan
+                model_slice = decolumnize(model_column, mask)
+                model_slice[np.where(mask == 0)] = np.nan
+            elif flag_di == 1:
+                model_column = np.dot(components_column_all[:, :i+1], coefs)
+                model_slice = decolumnize(model_column, mask_all)
+                model_slice[np.where(mask_all == 0)] = np.nan
             
             if i == 0:
                 model = np.zeros((n_components, ) + model_slice.shape)
