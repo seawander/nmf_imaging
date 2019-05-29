@@ -180,7 +180,7 @@ def NMFcomponents(ref, ref_err = None, mask = None, n_components = None, maxiter
 
     return components
     
-def NMFmodelling(trg, components, n_components = None, trg_err = None, mask_components = None, mask_interested = None, maxiters = 1e3, returnChi2 = False, projectionsOnly = False, coefsAlso = False, cube = False, trgThresh = 1.0, mask_data_inputation = None):
+def NMFmodelling(trg, components, n_components = None, trg_err = None, mask_components = None, mask_interested = None, maxiters = 1e3, returnChi2 = False, projectionsOnly = False, coefsAlso = False, cube = False, trgThresh = 1.0, mask_data_imputation = None):
     """
     trg: height * width
     components: n * height * width, calculated using NMFcomponents.
@@ -191,7 +191,7 @@ def NMFmodelling(trg, components, n_components = None, trg_err = None, mask_comp
     projectionsOnly: output the individual projection results.
     cube: whether output a cube or not (increasing the number of components).
     trgThresh: ignore the regions with low photon counts. Especially when they are ~10^-15 or smaller. I chose 1 in this case.
-    mask_data_inputation: a 2D mask to model the planet-/disk-less regions (0 means there are planets/disks). The reconstructed model will still model the planet-/disk- regions, but without any input from them.
+    mask_data_imputation: a 2D mask to model the planet-/disk-less regions (0 means there are planets/disks). The reconstructed model will still model the planet-/disk- regions, but without any input from them.
     """
     if mask_interested is None:
         mask_interested = np.ones(trg.shape)
@@ -201,14 +201,14 @@ def NMFmodelling(trg, components, n_components = None, trg_err = None, mask_comp
     if n_components is None:
         n_components = components.shape[0]
         
-    if mask_data_inputation is None:
+    if mask_data_imputation is None:
         flag_di = 0
-        mask_data_inputation = np.ones(trg.shape)
+        mask_data_imputation = np.ones(trg.shape)
     else:
         flag_di = 1
         print('Data Imputation!')
         
-    mask = mask_components*mask_interested*mask_data_inputation
+    mask = mask_components*mask_interested*mask_data_imputation
     
     mask[mask < 0.9] = 0
     mask[mask != 0] = 1
