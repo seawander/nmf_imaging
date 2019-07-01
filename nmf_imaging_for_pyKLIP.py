@@ -164,9 +164,9 @@ def nmf_math(sci, ref_psfs, sci_err = None, ref_psfs_err = None, componentNum = 
     model = NMFmodelling(trg = sci, components = components, n_components = componentNum, trg_err = sci_err, maxiters=maxiters)
     
     #Bff Procedure below: for planets, it will not be implemented.
-    if trg_type == 'p' or 'planet': # planets
+    if (trg_type == 'p') or (trg_type == 'planet'): # planets
         best_frac = 1
-    elif trg_type == 'd' or 'disk': # disks
+    elif (trg_type == 'd') or (trg_type == 'disk'): # disks
         best_frac = NMFbff(trg = sci, model = model)
     
     result = NMFsubtraction(trg = sci, model = model, frac = best_frac)
