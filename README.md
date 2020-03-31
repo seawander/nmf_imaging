@@ -4,7 +4,11 @@
 
 Postprocessing code for high contrast imaging using vectorized Nonnegative Matrix Factorization (NMF) in Python. The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and the sequential construction of NMF components (i.e., sNMF) is studied by Ren et al. ([2018](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)) for the application in high contrast imaging in the exoplanetary science. The data imputation with missing data approach using sNMF (i.e., DI-sNMF) studied by Ren et al. ([2020](https://ui.adsabs.harvard.edu/abs/2020arXiv200100563R/abstract)) is also supported in this package.
 
-***Prerequisite*** to run this code: the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) code, named ```NonnegMFPy```, can be obtained from [here](https://github.com/guangtunbenzhu/NonnegMFPy) or simply type ```pip install NonnegMFPy``` in your commandline. The requirements of ```NonnegMFPy``` should also be met: Python ( > 3.5.1), NumPy ( > 1.11.0), and Scipy ( > 0.17.0).
+***Prerequisite*** to run this code: the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) code, named ```NonnegMFPy```, can be obtained from [here](https://github.com/guangtunbenzhu/NonnegMFPy) or simply type 
+```
+pip install NonnegMFPy
+``` 
+in your command line. The requirements of ```NonnegMFPy``` should also be met: Python ( > 3.5.1), NumPy ( > 1.11.0), and Scipy ( > 0.17.0).
 
 ## Installation
 ```pip install --user -e git+https://github.com/seawander/nmf_imaging.git#egg=Package```
