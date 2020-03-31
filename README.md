@@ -1,7 +1,6 @@
 # nmf_imaging [![DOI](https://zenodo.org/badge/95447087.svg)](https://zenodo.org/badge/latestdoi/95447087)
 
 
-
 Postprocessing code for high contrast imaging using vectorized Nonnegative Matrix Factorization (NMF) in Python. The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and the sequential construction of NMF components (i.e., sNMF) is studied by Ren et al. ([2018](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)) for the application in high contrast imaging in the exoplanetary science. The data imputation with missing data approach using sNMF (i.e., DI-sNMF) studied by Ren et al. ([2020](https://ui.adsabs.harvard.edu/abs/2020arXiv200100563R/abstract)) is also supported in this package. This code takes two dimensional images as input, please refer to Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) for one dimensional data.
 
 ***Prerequisite*** to run this code: the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) code, named ```NonnegMFPy```, can be obtained from [here](https://github.com/guangtunbenzhu/NonnegMFPy) or simply type 
@@ -76,7 +75,7 @@ model = nmf_imaging.NMFmodelling(trg = trg, trg_err = trg_err, components = comp
 result = trg - model
 ```
 
-And voilà, ```model``` contains the data imputaion model, and you can remove it from the target, and investigate what is in the residual ```result```.
+And voilà, ```model``` contains the data imputation model, and you can remove it from the target, and investigate what is in the residual ```result```. See Ren et al. ([2020](https://ui.adsabs.harvard.edu/abs/2020arXiv200100563R/abstract)) for an example in astronomy.
     
 ## References
 Original sequential NMF: Ren et al. (2018), publised in the Astrophysical Journal (ADS [link](https://ui.adsabs.harvard.edu/abs/2018ApJ...852..104R/abstract)). [![DOI](https://img.shields.io/badge/DOI-10.3847/1538--4357/aaa1f2-blue)](https://doi.org/10.3847/1538-4357/aaa1f2)
