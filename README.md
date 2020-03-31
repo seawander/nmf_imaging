@@ -2,7 +2,9 @@
 
 
 
-Postprocessing code for high contrast imaging using vectorized Nonnegative Matrix Factorization (NMF) in Python. The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and is studied by Ren et al. ([2018]([link](http://adsabs.harvard.edu/abs/2018ApJ...852..104R))) for the application in high contrast imaging in the exoplanetary science. This code depends on the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) [code](https://github.com/seawander/NonnegMFPy).
+Postprocessing code for high contrast imaging using vectorized Nonnegative Matrix Factorization (NMF) in Python. The vectorized NMF is proposed by Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)), and the sequential construction of NMF components (i.e., sNMF) is studied by Ren et al. ([2018](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)) for the application in high contrast imaging in the exoplanetary science. The data imputation with missing data approach using sNMF (i.e., DI-sNMF) studied by Ren et al. ([2020](https://ui.adsabs.harvard.edu/abs/2020arXiv200100563R/abstract)) is also supported in this package.
+
+***Prerequisite*** to run this code: the Zhu ([2016](http://adsabs.harvard.edu/abs/2016arXiv161206037Z)) code, named ```NonnegMFPy```, can be obtained from [here](https://github.com/guangtunbenzhu/NonnegMFPy). The requirements of ```NonnegMFPy``` should also be met: Python ( > 3.5.1), NumPy ( > 1.11.0), and Scipy ( > 0.17.0).
 
 ## Installation
 ```pip install --user -e git+https://github.com/seawander/nmf_imaging.git#egg=Package```
@@ -51,12 +53,34 @@ for i in range(trgs.shape[0]):
 
 # Now `results' stores the NMF subtraction results of the targets.
 ```
+### 4. Data Imputation
+Ignore a certain fraction of data either in component construction, or in target modeling, or both (Ren et al. [2020](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)).
+#### 4.1 Ignore a fraction of data in component construction
+Say you would like to ignore a fraction of data in component construction. Construct a 3D binary array ```mask_new``` that is of the same dimension as the references ```refs```, and make its elements to be 0 for the indices of the to-be-ignored elements (or the "missing data") in ```refs```.
+```python
+import nmf_imaging
+components = nmf_imaging.NMFcomponents(refs, ref_err = refs_err, mask = mask_new, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
+# Note: "mask_new" can be a three dimensional binary array that matches the size of the refs. Put 0 there for the elements you would like to ignore.
+```
+#### 4.2 Ignore a fraction of data in target modeling
+This is needed when you have the NMF components ```components```, no matter whether they are the original ones or the ones that are from the previous approach, and would like to ingore a fraction of the target ```trg```. Mark the to-be-imputed region with a binary mask ```mask_data_imputation``` where 0 means that element is missing and 1 otherwise.
 
-## Dependences
-NonnegMFPy, which can be obtained from [https://github.com/guangtunbenzhu/NonnegMFPy](https://github.com/guangtunbenzhu/NonnegMFPy), and its dependences: Python ( > 3.5.1), NumPy ( > 1.11.0), and Scipy ( > 0.17.0).
+```python
+model = nmf_imaging.NMFmodelling(trg = trg, trg_err = trg_err, components = components, \
+		n_components = componentNum, trg_err = trg_err, mask_components=mask, \	
+		maxiters=maxiters, mask_data_imputation = mask_data_imputation)
+result = trg - model
+```
+
+And voilà, ```model``` contains the data imputaion model, and you can remove it from the target, and investigate what is in the residual ```result```.
     
 ## References
-Ren et al. (2018), publised in the Astrophysical Journal (ADS [link](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)).
+Original sequential NMF: Ren et al. (2018), publised in the Astrophysical Journal (ADS [link](https://ui.adsabs.harvard.edu/abs/2018ApJ...852..104R/abstract)). [![DOI](https://img.shields.io/badge/DOI-10.3847/1538--4357/aaa1f2-blue)](https://doi.org/10.3847/1538-4357/aaa1f2)
+
+Data Imputation using sequential NMF: Ren et al. (2020), published in the Astrophysical Journal (ADS [link](https://ui.adsabs.harvard.edu/abs/2020arXiv200100563R/abstract)). [![DOI](https://img.shields.io/badge/DOI-10.3847/1538--4357/ab7024-blue)](https://doi.org/10.3847/1538-4357/ab7024)
+
+
+
 
 *BibTex*
 ```
