@@ -58,7 +58,7 @@ for i in range(trgs.shape[0]):
 # Now `results' stores the NMF subtraction results of the targets.
 ```
 ### 4. Data Imputation
-Ignore a certain fraction of data either in component construction, or in target modeling, or both (Ren et al. [2020](http://adsabs.harvard.edu/abs/2018ApJ...852..104R)).
+Ignore a certain fraction of data either in component construction, or in target modeling, or both (Ren et al. [2020](https://ui.adsabs.harvard.edu/abs/2020arXiv200100563R/abstract)).
 #### 4.1 Ignore a fraction of data in component construction
 Say you would like to ignore a fraction of data in component construction. Construct a 3D binary array ```mask_new``` that is of the same dimension as the references ```refs```, and make its elements to be 0 for the indices of the to-be-ignored elements (or the "missing data") in ```refs```.
 ```python
