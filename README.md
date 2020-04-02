@@ -85,15 +85,16 @@ Data Imputation using sequential NMF: Ren et al. (2020), published in the Astrop
 
 
 
-*BibTex*
+*BibTex* if you use the AASTeX package.
 ```
 @misc{nmfimaging,
-	author     	= { {Ren}, Bin },
-	title      	= {nmf\_imaging, v1.0, Zenodo, doi: \href{https://doi.org/10.5281/zenodo.2424378}{10.5281/zenodo.2424378}},
-	version 	= {1.0},
-	month      	= Dec,
-	year         	= 2018,
-	doi          	= {10.5281/zenodo.2424378},
-	url		= {https://doi.org/10.5281/zenodo.2424378}
+  author       = {Bin Ren},
+  title        = {nmf\_imaging, doi: \href{https://doi.org/10.5281/zenodo.3738623}{10.5281/zenodo.3738623}},
+  month        = apr,
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {v2.0},
+  doi          = {10.5281/zenodo.3738623},
+  url          = {https://doi.org/10.5281/zenodo.3738623}
 }
 ```
