@@ -1,6 +1,6 @@
 # This code is the nmf_imaging.py adjusted for pyKLIP at https://bitbucket.org/pyKLIP/pyklip/src/master/pyklip/nmf_imaging.py
 # Another version is kept at https://github.com/seawander/nmf_imaging/blob/master/nmf_imaging_for_pyKLIP.py
-# Data inputation is not supported due to the input data structure of pyKLIP, since a 3D cube is needed.
+# Data imputation is not supported due to the input data structure of pyKLIP, since a 3D cube is needed.
 
 from NonnegMFPy import nmf
 import numpy as np
