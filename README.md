@@ -76,7 +76,11 @@ result = trg - model
 ```
 
 And voilà, ```model``` contains the data imputation model, and you can remove it from the target, and investigate what is in the residual ```result```. See Ren et al. ([2020](https://ui.adsabs.harvard.edu/abs/2020arXiv200100563R/abstract)) for an example in astronomy.
-    
+
+## Debugging
+If you have a "missing data" error in the NonnegMFPy output, then try to mark the following values as 0 in your mask: non-negative values, ```np.nan```, and ```np.inf```.
+
+
 ## References
 Original sequential NMF: Ren et al. (2018), publised in the Astrophysical Journal (ADS [link](https://ui.adsabs.harvard.edu/abs/2018ApJ...852..104R/abstract)). [![DOI](https://img.shields.io/badge/DOI-10.3847/1538--4357/aaa1f2-blue)](https://doi.org/10.3847/1538-4357/aaa1f2)
 
