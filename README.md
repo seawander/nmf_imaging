@@ -42,8 +42,9 @@ import nmf_imaging
 components = nmf_imaging.NMFcomponents(refs, ref_err = refs_err, mask = mask, n_components = componentNum, maxiters = maxiters, oneByOne=oneByOne)
 #The above line construct the NMF components using the references. 
 #The components can be stored in local disk to save future computational cost.
+#Note: set "oneByOne = True" to perform sequential NMF component construction, as studied in Ren et al. (2018).
 
-#Next: modeling a number of targets (especially, many exposures of a single targets):
+#Next: modeling a number of targets (especially, many exposures of a single target):
 results = np.zeros(trgs.shape) # Say trgs is a 3D array containing the targets that need NMF modeling, then results store the NMF subtraction results.
 
 for i in range(trgs.shape[0]):
