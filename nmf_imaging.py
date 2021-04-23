@@ -484,6 +484,6 @@ def nmf_func(trg, refs, trg_err = None, refs_err = None, mask = None, componentN
     if (trg_type == 'p') or (trg_type == 'planet'): # planets
         best_frac = 1
     elif (trg_type == 'd') or (trg_type == 'disk'): # disks
-        best_frac = NMFbff(trg = sci, model = model)
+        best_frac = NMFbff(trg = trg, model = model)
     result = NMFsubtraction(trg = trg, model = model, mask = mask, frac = best_frac)
     return result
