@@ -96,32 +96,18 @@ def NMFcomponents(ref, ref_err = None, mask = None, n_components = None, maxiter
         
         ref_columnized = columnize(ref, mask = mask)
         ref_err_columnized = columnize(ref_err, mask = mask)
-    elif len(mask.shape) == 3: # ADI case, or the case where some regions must be masked out
-        mask_mark = np.nansum(mask, axis = 0) # This new mask is used to identify the regions where there are not covered in any image
-        ref2 = np.zeros(ref.shape)
-        ref_err2 = np.zeros(ref_err.shape)
-        mask2 = np.zeros(mask.shape)
-        for i in range(ref.shape[0]): # then use mask_mark to mark the non-covered regions to be 1 (avoiding NonnegMFPy errors)
-            ref2[i] = ref[i]
-            ref2[i][np.where(mask_mark == 0)] = 1 # this 1 is only a place holder!
-            
-            ref_err2[i] = ref_err[i]
-            ref_err2[i][np.where(mask_mark == 0)] = 1 # this 1 is only a place holder!
-        
-            mask2[i] = mask[i]
-            mask2[i][np.where(mask_mark == 0)] = 1 # this 1 is only a place holder! The 1 regions will be calculated!
-        
-        ref = ref2
-        ref_err = ref_err2
-        mask = mask2                    # use the adjusted arrays for calculation
+    elif len(mask.shape) == 3: # ADI data imputation case, or the case where some regions must be masked out
         
         mask[ref <= 0] = 0
         mask[np.isnan(ref)] = 0
         mask[~np.isfinite(ref)] = 0 # handling bad values in 3D mask case
         
-        ref_columnized = columnize(ref)
-        ref_err_columnized = columnize(ref_err)        
-        mask_columnized = np.array(columnize(mask), dtype = bool)
+        mask_mark = np.nansum(mask, axis = 0) # This new mask is used to identify the regions that are masked out in all refs
+        mask_mark[mask_mark != 0] = 1 # 1 means that there is coverage in at least one of the refs
+        
+        ref_columnized = columnize(ref, mask = mask_mark)
+        ref_err_columnized = columnize(ref_err, mask = mask_mark)        
+        mask_columnized = np.array(columnize(mask, mask = mask_mark), dtype = bool)
                 
     components_column = 0
     
@@ -136,7 +122,9 @@ def NMFcomponents(ref, ref_err = None, mask = None, n_components = None, maxiter
             g_img = nmf.NMF(ref_columnized, V=1.0/ref_err_columnized**2, M = mask_columnized, n_components=n_components)
             chi2, time_used = g_img.SolveNMF(maxiters=maxiters)
             components_column = g_img.W/np.sqrt(np.nansum(g_img.W**2, axis = 0)) #normalize the components
-            components = decolumnize(components_column, mask = np.ones(ref[0].shape))
+            
+            components = decolumnize(components_column, mask = mask_mark) # ignore the regions that are commonly masked out in all refs 
+            #The above line is changed on 2021-11-12 PST to speed up calculation
             for i in range(components.shape[0]):
                 components[i][np.where(mask_mark == 0)] = np.nan
             components = (components.T/np.sqrt(np.nansum(components**2, axis = (1, 2))).T).T
@@ -314,7 +302,8 @@ def NMFcomponents(ref, ref_err = None, mask = None, n_components = None, maxiter
                             fits.writeto(path_save + '_coef.fits', g_img.H, overwrite = True)
                             components_column = g_img.W/np.sqrt(np.nansum(g_img.W**2, axis = 0)) #normalize the components
 
-            components = decolumnize(components_column, mask = np.ones(ref[0].shape))
+            components = decolumnize(components_column, mask = mask_mark) # ignore the regions that are commonly masked out in all refs 
+            #The above line is changed on 2021-11-12 PST to speed up calculation
             for i in range(components.shape[0]):
                 components[i][np.where(mask_mark == 0)] = np.nan
             components = (components.T/np.sqrt(np.nansum(components**2, axis = (1, 2))).T).T
