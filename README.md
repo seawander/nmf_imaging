@@ -78,8 +78,10 @@ result = trg - model
 
 And voilà, ```model``` contains the data imputation model, and you can remove it from the target, and investigate what is in the residual ```result```. See Ren et al. ([2020](https://ui.adsabs.harvard.edu/abs/2020arXiv200100563R/abstract)) for an example in astronomy.
 
-## Debugging
-If you have a "missing data" error in the NonnegMFPy output, then try to mark the following values as 0 in your mask: non-positive values, ```np.nan```, and ```np.inf```.
+## Debugging and Troubleshooting
+1. If you have a "missing data" error in the NonnegMFPy output, then try to mark the following values as 0 in your mask: non-positive values, ```np.nan```, and ```np.inf```.
+2. If you see a negative halo in your reduction (see the left panel of figure below), set `trgThresh = 0` when calling the `NMFmodelling` function. This usually happens when your peripheral input data have low count rates, and my default value of `trgThresh = 1.0` will ignore those region that have counts lower than `trgThresh`. After the fix, you should get something like the right panel.
+<img width="1079" alt="Screen Shot 2021-12-13 at 2 53 28 PM" src="https://user-images.githubusercontent.com/10532909/145901978-38afb2f2-c490-40d9-828f-79ee2f60a5c2.png">
 
 
 ## References
